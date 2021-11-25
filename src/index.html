@@ -9,15 +9,23 @@
     <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
 
   </head>
   <body>
-    <a-scene physics="gravity: -9.8; debug: true">
+    <a-scene physics="gravity: -9.8" inspector-plugin-recast> <!--TODO: remove inspector in final build-->
       <a-assets>
         <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+        <a-asset-item id="test-nav-mesh" src="../../assets/navmesh/testnavmesh.gltf"></a-asset-item>
       </a-assets>
 
+      <a-entity movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 2">
+        <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: true">
+          <a-cursor></a-cursor>
+        </a-entity>
+      </a-entity>
+      
       <a-box static-body width="5" height="2.5" depth="0.5" position="-1 0.6 -3" color="#4CC3D9"></a-box>
       <a-sphere dynamic-body position="0 5 -2.5" radius="1.25" color="#EF2D5E"></a-sphere>
 
@@ -26,7 +34,9 @@
       <a-light type="ambient" color="#999999"></a-light>
       <a-light type="point" intensity="0.6" position="2 4 4"></a-light>
 
-      <a-plane static-body src="#groundTexture" scale="100 100 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
+      <a-plane static-body src="#groundTexture" scale="10 10 1" repeat="10 10 1" rotation="-90 0 0"></a-plane>
+
+      <a-entity gltf-model="#test-nav-mesh" nav-mesh position="0 -0.1 0" visible="false"></a-entity>
 
       <!--Tracked controls. -->
       <a-entity hand-controls="hand: left"></a-entity>
