@@ -15,3 +15,4 @@ npm install
 ```sh
 npm start
 ```
+Go to localhost

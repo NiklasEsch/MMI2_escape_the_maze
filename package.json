@@ -8,7 +8,7 @@
     "node" : ">=14.0.0" 
   },
   "scripts": {
-    "start": "http-server ./src"
+    "start": "http-server"
   },
   "devDependencies": {
     "ghpages": "^0.0.10",
@@ -22,8 +22,5 @@
     "aframe-scene",
     "webvr",
     "vr"
-  ],
-  "dependencies": {
-    "aframe": "^1.2.0"
-  }
+  ]
 }
