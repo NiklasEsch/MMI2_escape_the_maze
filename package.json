@@ -3,8 +3,12 @@
   "description": "mmi2_escape_the_maze.",
   "version": "1.0.0",
   "license": "MIT",
+  "scripts": {
+    "start": "http-server ./src"
+  },
   "devDependencies": {
-    "ghpages": "0.0.3",
+    "ghpages": "^0.0.10",
+    "http-server": "^14.0.0",
     "live-server": "^1.2.0"
   },
   "keywords": [
@@ -14,5 +18,8 @@
     "aframe-scene",
     "webvr",
     "vr"
-  ]
+  ],
+  "dependencies": {
+    "aframe": "^1.2.0"
+  }
 }
