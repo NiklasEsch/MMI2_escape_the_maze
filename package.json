@@ -22,8 +22,5 @@
     "aframe-scene",
     "webvr",
     "vr"
-  ],
-  "dependencies": {
-    "aframe": "^1.2.0"
-  }
+  ]
 }
