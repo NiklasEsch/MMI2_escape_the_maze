@@ -17,7 +17,7 @@
       <a-assets>
         <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
-        <a-asset-item id="test-nav-mesh" src="/assets/navmesh/testnavmesh.gltf"></a-asset-item>
+        <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
         <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
       </a-assets>
 
@@ -26,20 +26,17 @@
           <a-cursor></a-cursor>
         </a-entity>
       </a-entity>
-      
-      <a-box static-body width="5" height="2.5" depth="0.5" position="-1 0.6 -3" color="#4CC3D9"></a-box>
-      <a-sphere dynamic-body position="0 5 -2.5" radius="1.25" color="#EF2D5E"></a-sphere>
 
-      <a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
+      <a-sky height="2048" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
       <a-entity obj-model="obj: #maze-obj" position="-1.2 0 35" ></a-entity>
 
       <a-light type="ambient" color="#999999"></a-light>
       <a-light type="point" intensity="0.6" position="2 4 4"></a-light>
 
-      <a-plane static-body src="#groundTexture" scale="10 10 1" repeat="10 10 1" rotation="-90 0 0"></a-plane>
+      <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
-      <a-entity gltf-model="#test-nav-mesh" nav-mesh position="0 -0.1 0" visible="false"></a-entity>
+      <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -0.1 0" visible="false"></a-entity>
 
       <!--Tracked controls. -->
       <a-entity hand-controls="hand: left"></a-entity>
