@@ -4,43 +4,30 @@
     <meta charset="utf-8">
     <title>Escape the Maze</title>
     <meta name="description" content="Escape the Maze">
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-    <script src="./geometries/example.js"></script>
-    <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
 
   </head>
   <body>
-    <a-scene physics="gravity: -9.8" inspector-plugin-recast> <!--TODO: remove inspector in final build-->
-      <a-assets>
-        <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
-        <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
-        <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
-        <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
-      </a-assets>
+    <h1>
+      Escape the Maze
+    </h1>
+    <div>
+      <h4>
+        Are you going to play in Virtual Reality or on your smartphone?
+      </h4>
+      <div>
+        <a href="vrScene.html">
+        <button>
+          VR
+        </button>
+        </a>
+        <a href="smartphoneScene.html">
+          <button>
+            Smartphone
+          </button>
+        </a>
+      </div>
+      
+    </div>
 
-      <a-entity movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 2">
-        <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: true">
-          <a-cursor></a-cursor>
-        </a-entity>
-      </a-entity>
-
-      <a-sky height="2048" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
-
-      <a-entity obj-model="obj: #maze-obj" position="-1.2 0 35" ></a-entity>
-
-      <a-light type="ambient" color="#999999"></a-light>
-      <a-light type="point" intensity="0.6" position="2 4 4"></a-light>
-
-      <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
-
-      <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -0.1 0" visible="false"></a-entity>
-
-      <!--Tracked controls. -->
-      <a-entity hand-controls="hand: left"></a-entity>
-      <a-entity hand-controls="hand: right"></a-entity>
-    </a-scene>
   </body>
 </html>
