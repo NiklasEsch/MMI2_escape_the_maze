@@ -21,21 +21,27 @@
         <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
       </a-assets>
 
+      <!-- Camera -->
       <a-entity movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 2">
         <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: true">
           <a-cursor></a-cursor>
         </a-entity>
       </a-entity>
 
+      <!-- Sky -->
       <a-sky height="2048" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
+      <!-- Maze -->
       <a-entity obj-model="obj: #maze-obj" position="-1.2 0 35" ></a-entity>
 
+      <!-- Light -->
       <a-light type="ambient" color="#999999"></a-light>
       <a-light type="point" intensity="0.6" position="2 4 4"></a-light>
 
+      <!-- Ground -->
       <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
+      <!-- Collider system (Navigation mesh) of #maze-obj -->
       <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -0.1 0" visible="false"></a-entity>
 
       <!--Tracked controls. -->

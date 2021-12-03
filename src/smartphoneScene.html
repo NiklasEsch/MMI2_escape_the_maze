@@ -20,27 +20,88 @@
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
         <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
         <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
+        <a-mixin
+          id="button"
+          geometry="primitive: plane; width: 0.5; height: 0.1"
+          material="color: white; shader: flat"
+          rotation="-90 0 0"
+         ></a-mixin>
+         <a-mixin
+          id="text"
+          rotation="-90 0 0"
+         ></a-mixin>
       </a-assets>
 
+      <!-- Camera -->
       <a-entity position="0 40 35" rotation="-90 0 0">
-        <a-entity camera></a-entity> <!--multitouch-look-controls for touch controls, could not get it running-->
+        <a-entity camera ></a-entity> <!--multitouch-look-controls for touch controls, could not get it running-->
             <a-cursor></a-cursor>
         </a-entity>
       </a-entity>
 
+      <!-- Sky -->
       <a-sky height="2048" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
+      <!-- Maze -->
       <a-entity obj-model="obj: #maze-obj" position="-1.2 -7 35" ></a-entity>
 
+      <!-- Light -->
       <a-light type="ambient" color="#999999"></a-light>
       <a-light type="point" intensity="0.6" position="2 4 4"></a-light>
 
+      <!-- Ground -->
       <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
+      <!-- Hand controls -->
+      <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .raycastable"></a-entity>
+      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .raycastable" line="color: #118A7E"></a-entity>
 
-      <!--Tracked controls. -->
-      <a-entity hand-controls="hand: left"></a-entity>
-      <a-entity hand-controls="hand: right"></a-entity>
+      <!-- UI -->
+      <a-entity id="ui" position="0 38.74 35">
+        <!-- Buttons -->
+        <a-entity id="buttons" highlight>
+          <a-entity id="monsterButton" position="-1.8 0 0.8" mixin="button" class="raycastable menu-button">
+            <a-entity id="monsterText"
+            position="-0.18 0.01 0.05"
+            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: black; value: Defeat Monster"></a-entity>
+          </a-entity>
+          <a-entity id="coinButton" position="1.8 0 0.8" mixin="button" class="raycastable menu-button">
+            <a-entity id="coinText"
+            position="-0.24 0.01 0.05"
+            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: black; value: Collect Coin"></a-entity>
+          </a-entity>
+        </a-entity>
+
+        <!-- Text -->
+        <a-entity id="texts" highlight>
+          <a-entity id="remainingTimeText"
+            position="-2 0 -0.8" mixin="text"
+            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Remaining Time:"></a-entity>
+          <a-entity id="collectedCoinsText"
+            position="1.5 0 -0.8" mixin="text"
+            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Collected Coins:"></a-entity>
+        </a-entity>
+
+        <!-- Info panel of the selected movie. -->
+        <a-entity
+          id="infoPanel"
+          position="0 0 0.5"
+          info-panel
+          visible="false"
+          scale="0.001 0.001 0.001"
+          geometry="primitive: plane; width: 1.5; height: 1.8"
+          material="color: #333333; shader: flat; transparent: false" class="raycastable">
+          <a-entity id="ponyoMovieImage" mixin="movieImage" material="src: #ponyo" visible="false"></a-entity>
+          <a-entity id="kazetachinuMovieImage" mixin="movieImage" material="src: #kazetachinu" visible="false"></a-entity>
+          <a-entity id="karigurashiMovieImage" mixin="movieImage" material="src: #karigurashi" visible="false"></a-entity>
+          <a-entity id="movieTitle"
+            position="-0.68 -0.1 0"
+            text="shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Ponyo (2003)"></a-entity>
+          <a-entity id="movieDescription"
+            position="-0.68 -0.2 0"
+            text="baseline: top; shader: msdf; anchor: left; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."></a-entity>
+        </a-entity>
+      </a-entity>
     </a-scene>
   </body>
 </html>
