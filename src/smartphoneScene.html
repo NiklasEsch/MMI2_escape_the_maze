@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="./multitouch-look-controls.js"></script>
 
   </head>
   <body>
@@ -22,7 +23,7 @@
       </a-assets>
 
       <a-entity position="0 40 35" rotation="-90 0 0">
-        <a-entity camera look-controls="enabled: true">
+        <a-entity camera></a-entity> <!--multitouch-look-controls for touch controls, could not get it running-->
             <a-cursor></a-cursor>
         </a-entity>
       </a-entity>
