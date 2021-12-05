@@ -3,12 +3,12 @@
   "description": "mmi2_escape_the_maze.",
   "version": "1.0.0",
   "license": "MIT",
-  "engines" : { 
+  "engines": {
     "npm": ">=7.0.0",
-    "node" : ">=14.0.0" 
+    "node": ">=14.0.0"
   },
   "scripts": {
-    "start": "http-server"
+    "start": "node ./server/easyrtc-server.js"
   },
   "devDependencies": {
     "ghpages": "^0.0.10",
@@ -22,5 +22,8 @@
     "aframe-scene",
     "webvr",
     "vr"
-  ]
+  ],
+  "dependencies": {
+    "networked-aframe": "^0.8.3"
+  }
 }
