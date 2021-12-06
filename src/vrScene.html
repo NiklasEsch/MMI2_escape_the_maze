@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+
    <!--Networked-A-Frame-->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
    <script src="/easyrtc/easyrtc.js"></script>
@@ -57,19 +58,18 @@
         <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
         <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
       </a-assets>
-
-      <!-- Camera -->
-      <a-entity movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 2">
-        <a-entity id="player" networked="template:#avatar-template;attachTemplateToLocal:false;" camera position="0 1.6 0" wasd-controls look-controls></a-entity>
-          <a-cursor></a-cursor>
-        </a-entity>
-      </a-entity>
-
+          <!-- Camera VR -->
+          <a-entity movement-controls="speed: 0.15; constrainToNavMesh: true">
+            <a-entity id="player" networked="template:#avatar-template;attachTemplateToLocal:false;" camera position="0 1.6 0" wasd-controls look-controls></a-entity>
+              <a-cursor></a-cursor>
+            </a-entity>
+          </a-entity> 
+          
       <!-- Sky -->
       <a-sky height="2048" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
       <!-- Maze -->
-      <a-entity obj-model="obj: #maze-obj" position="-1.2 0 35" ></a-entity>
+      <a-entity obj-model="obj: #maze-obj" position="-1.2 0 44" ></a-entity>
 
       <!-- Light -->
       <a-light type="ambient" color="#999999"></a-light>
