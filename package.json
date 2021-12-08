@@ -3,9 +3,9 @@
   "description": "mmi2_escape_the_maze.",
   "version": "1.0.0",
   "license": "MIT",
-  "engines" : { 
+  "engines": {
     "npm": ">=7.0.0",
-    "node" : ">=14.0.0" 
+    "node": ">=14.0.0"
   },
   "scripts": {
     "start": "http-server"
@@ -22,5 +22,8 @@
     "aframe-scene",
     "webvr",
     "vr"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  }
 }
