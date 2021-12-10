@@ -15,6 +15,38 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
    <script src="/easyrtc/easyrtc.js"></script>
    <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
+    <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+    <script >
+      window.hitMonster = function () {
+        console.log("Monster defeated");
+      }
+
+      window.collectCoin = function () {
+        document.getElementById("collectedCoinsValue")
+        var coinValue = document.getElementById("collectedCoinsValue").getAttribute('value');
+        newCoinValue = +coinValue + 1;
+        document.getElementById("collectedCoinsValue").setAttribute('value', newCoinValue);
+      }
+
+      function startTimer(duration, display) {
+		    var timer = duration, minutes, seconds;
+		    setInterval(function () {
+		        seconds = parseInt(timer % 60, 10);
+		        seconds = seconds < 10 ? "0" + seconds : seconds;
+		        display.setAttribute('count-down', seconds);
+		        if (--timer < 0) {
+		            timer = duration;
+		        }
+		    }, 1000);
+      }
+
+      window.onload = function () {
+          var countDownEntity = document.getElementById("timer"),
+            duration = countDownEntity.getAttribute('count-down');
+            startTimer(duration, countDownEntity);
+      };
+    </script>
+
   </head>
   <body>
     <a-scene networked-scene="app: myApp; room: room1; debug: true;" physics="gravity: -9.8"> <!--TODO: remove inspector in final build-->
@@ -57,23 +89,12 @@
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
         <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
         <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
-        <a-mixin
-          id="button"
-          geometry="primitive: plane; width: 0.5; height: 0.1"
-          material="color: white; shader: flat"
-          rotation="-90 0 0"
-         ></a-mixin>
-         <a-mixin
-          id="text"
-          rotation="-90 0 0"
-         ></a-mixin>
       </a-assets>
 
       <!-- Camera SMARTPHONE -->
       <a-entity position="0 40 35" rotation="-90 0 0">
-        <a-entity camera ></a-entity> <!--multitouch-look-controls for touch controls, could not get it running-->
-            <a-cursor></a-cursor>
-        </a-entity>
+        <a-camera look-controls-enabled="false"> <!--multitouch-look-controls for touch controls, could not get it running-->
+        </a-camera>
       </a-entity>
 
       <!-- Sky -->
@@ -89,56 +110,144 @@
       <!-- Ground -->
       <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
+      <!-- Mouse cursor so we can click on the scene with mouse or touch. -->
+		  <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: [gui-interactable]"></a-entity>
+		
       <!-- Hand controls -->
-      <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .raycastable"></a-entity>
-      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .raycastable" line="color: #118A7E"></a-entity>
+      <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: [gui-interactable]"></a-entity>
+		  <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: [gui-interactable]"></a-entity>
 
-      <!-- UI -->
-      <a-entity id="ui" position="0 38.74 35">
-        <!-- Buttons -->
-        <a-entity id="buttons" highlight>
-          <a-entity id="monsterButton" position="-1.8 0 0.8" mixin="button" class="raycastable menu-button">
-            <a-entity id="monsterText"
-            position="-0.18 0.01 0.05"
-            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: black; value: Defeat Monster"></a-entity>
-          </a-entity>
-          <a-entity id="coinButton" position="1.8 0 0.8" mixin="button" class="raycastable menu-button">
-            <a-entity id="coinText"
-            position="-0.24 0.01 0.05"
-            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: black; value: Collect Coin"></a-entity>
-          </a-entity>
-        </a-entity>
+      <!-- GUI -->
+      <a-gui-flex-container 
+        id="hitMonsterButtonContainer"
+        flex-direction="column" 
+        justify-content="center" 
+        width="2.5" 
+        height="0.7" 
+        position="-6 35 38.5" 
+        rotation="-90 0 0"
+      >
+        <a-gui-button
+          id="hitMonsterButton"
+          width="2.5" 
+          height="0.7" 
+          onclick="hitMonster" key-code="32"
+          value="Hit Monster"
+          font-size="0.25"
+          font-color="#F0F0F0"
+          active-color="#414BB2"
+          hover-color="#7bb8e8"
+          border-color="black"
+          focus-color="black"
+          background-color="#2D9BF0"
+        >
+        </a-gui-button>
+      </a-gui-flex-container>
 
-        <!-- Text -->
-        <a-entity id="texts" highlight>
-          <a-entity id="remainingTimeText"
-            position="-2 0 -0.8" mixin="text"
-            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Remaining Time:"></a-entity>
-          <a-entity id="collectedCoinsText"
-            position="1.5 0 -0.8" mixin="text"
-            text="baseline: top; shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Collected Coins:"></a-entity>
-        </a-entity>
+      <a-gui-flex-container 
+        id="collectCoinButtonContainer"
+        flex-direction="column" 
+        justify-content="center" 
+        width="2.5" 
+        height="0.7" 
+        position="6 35 38.5" 
+        rotation="-90 0 0"
+      >
+        <a-gui-button
+          id="collectCoinButton"
+          width="2.5" 
+          height="0.7" 
+          onclick="collectCoin" key-code="31"
+          value="Collect Coin"
+          font-size="0.25"
+          font-color="#F0F0F0"
+          active-color="#414BB2"
+          hover-color="#7bb8e8"
+          border-color="black"
+          focus-color="black"
+          background-color="#2D9BF0"
+        >
+        </a-gui-button>
+      </a-gui-flex-container>
 
-        <!-- Info panel of the selected movie. -->
-        <a-entity
-          id="infoPanel"
-          position="0 0 0.5"
-          info-panel
-          visible="false"
-          scale="0.001 0.001 0.001"
-          geometry="primitive: plane; width: 1.5; height: 1.8"
-          material="color: #333333; shader: flat; transparent: false" class="raycastable">
-          <a-entity id="ponyoMovieImage" mixin="movieImage" material="src: #ponyo" visible="false"></a-entity>
-          <a-entity id="kazetachinuMovieImage" mixin="movieImage" material="src: #kazetachinu" visible="false"></a-entity>
-          <a-entity id="karigurashiMovieImage" mixin="movieImage" material="src: #karigurashi" visible="false"></a-entity>
-          <a-entity id="movieTitle"
-            position="-0.68 -0.1 0"
-            text="shader: msdf; anchor: left; width: 1.5; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Ponyo (2003)"></a-entity>
-          <a-entity id="movieDescription"
-            position="-0.68 -0.2 0"
-            text="baseline: top; shader: msdf; anchor: left; font: https://cdn.aframe.io/examples/ui/Viga-Regular.json; color: white; value: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."></a-entity>
-        </a-entity>
-      </a-entity>
+
+      <a-gui-flex-container 
+        id="remainingTimeLabelContainer"
+        flex-direction="column" 
+        justify-content="center" 
+        align-items="center"
+        width="2.5" 
+        height="0.75" 
+        position="-7 35 31.7" 
+        rotation="-90 0 0"
+      >
+        <a-gui-label
+          id="remainingTimeLabel"
+          width="2.5" 
+          height="0.75"
+          value="Remaining time"
+          font-size="0.35"
+          line-height="0.8"
+          font-color="#F0F0F0"
+          background-color="black"
+        >
+        </a-gui-label>
+        <a-gui-circle-timer
+				id="timer"
+				height="0.75"
+				count-down="60"
+				callback="timedout"
+				background-color="#999"
+
+			>
+			</a-gui-circle-timer>
+        <!--<a-gui-label
+          id="remainingTimeValue"
+          width="2.5" 
+          height="0.5"
+          value="00:35"
+          font-size="0.35"
+          line-height="0.8"
+          font-color="#F0F0F0"
+          background-color="black"
+        >
+        </a-gui-label>-->
+      </a-gui-flex-container>
+
+      <a-gui-flex-container 
+        id="collectedCoinsLabelContainer"
+        flex-direction="column" 
+        justify-content="center" 
+        width="2.5" 
+        height="0.75" 
+        position="7 35 31.7" 
+        rotation="-90 0 0"
+      >
+        <a-gui-label
+          id="collectedCoinsLabel"
+          width="2.5" 
+          height="0.75"
+          value="Collected Coins"
+          font-size="0.35"
+          line-height="0.8"
+          font-color="#F0F0F0"
+          background-color="black"
+        >
+        </a-gui-label>
+        <a-gui-label
+          id="collectedCoinsValue"
+          width="2.5" 
+          height="0.5"
+          value="0"
+          font-size="0.35"
+          line-height="0.8"
+          font-color="#F0F0F0"
+          background-color="black"
+        >
+        </a-gui-label>
+      </a-gui-flex-container>
+
+      
     </a-scene>
   </body>
 </html>
