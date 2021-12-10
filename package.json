@@ -24,7 +24,7 @@
     "vr"
   ],
   "dependencies": {
-    "networked-aframe": "^0.8.3"
+    "networked-aframe": "^0.8.3",
     "bootstrap": "^5.1.3"
   }
 }
