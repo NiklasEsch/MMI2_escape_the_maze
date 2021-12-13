@@ -88,7 +88,7 @@
         <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
         <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
-        <a-asset-item id="maze-obj" src="./geometries/maze.obj" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="maze-obj" src="./geometries/maze20x20.obj" crossorigin="anonymous"></a-asset-item>
       </a-assets>
 
       <!-- Camera SMARTPHONE -->
@@ -101,7 +101,7 @@
       <a-sky height="2048" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
       <!-- Maze -->
-      <a-entity obj-model="obj: #maze-obj" position="-1.2 -7 38" ></a-entity>
+      <a-entity obj-model="obj: #maze-obj" position="-1.2 -13.5 33" ></a-entity>
 
       <!-- Light -->
       <a-light type="ambient" color="#999999"></a-light>
