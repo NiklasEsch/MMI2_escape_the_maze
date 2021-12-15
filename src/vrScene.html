@@ -59,7 +59,7 @@
         <a-asset-item id="maze-obj" src="./geometries/maze20x20.obj" crossorigin="anonymous"></a-asset-item>
       </a-assets>
           <!-- Camera VR -->
-          <a-entity movement-controls="speed: 0.15; constrainToNavMesh: true">
+          <a-entity movement-controls="speed: 0.35; constrainToNavMesh: true">
             <a-entity id="player" rotation="0 180 0" networked="template:#avatar-template;attachTemplateToLocal:false;" camera position="2 7 64" wasd-controls look-controls></a-entity>
               <a-cursor></a-cursor>
             </a-entity>
@@ -69,7 +69,7 @@
       <a-sky height="2048" position="0 0 0" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
       <!-- Maze -->
-      <a-entity obj-model="obj: #maze-obj" position="-5.5 2 -7.4" scale="1.95 1.95 1.95"></a-entity>
+      <a-entity obj-model="obj: #maze-obj" position="-5.5 0 -7.4" scale="1.95 1.95 1.95"></a-entity>
 
       <!-- Light -->
       <a-light type="ambient" color="#999999"></a-light>
@@ -79,7 +79,7 @@
       <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
       <!-- Collider system (Navigation mesh) of #maze-obj -->
-      <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -0.1 0" visible="false"></a-entity>
+      <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -0.1 0" visible="true"></a-entity> <!--edited nav mesh scale="2.88 0 2.88"-->
 
       <!--Tracked controls. -->
       <a-entity hand-controls="hand: left"></a-entity>
