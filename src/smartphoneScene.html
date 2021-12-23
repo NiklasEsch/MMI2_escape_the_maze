@@ -22,7 +22,6 @@
       }
 
       window.collectCoin = function () {
-        document.getElementById("collectedCoinsValue")
         var coinValue = document.getElementById("collectedCoinsValue").getAttribute('value');
         newCoinValue = +coinValue + 1;
         document.getElementById("collectedCoinsValue").setAttribute('value', newCoinValue);
@@ -45,6 +44,52 @@
             duration = countDownEntity.getAttribute('count-down');
             startTimer(duration, countDownEntity);
       };
+
+      function spawnLandmark(position, self){
+        var sphere = document.createElement('a-sphere');
+        sphere.setAttribute('id', "sphere" + position.x.toFixed() + position.z.toFixed());
+        sphere.setAttribute('material', 'color', self.data.color);
+        sphere.setAttribute('position', position);
+        self.el.sceneEl.appendChild(sphere);
+        
+        var light = document.createElement('a-light');
+        light.setAttribute('id', "light" + position.x.toFixed() + position.z.toFixed());
+        light.setAttribute('type', 'point')
+        light.setAttribute('intensity', '0.4');
+        light.setAttribute('distance', '50');
+        light.setAttribute('position', position);
+        self.el.sceneEl.appendChild(light);
+      }
+
+      function deleteLandmark(position){
+        var sphere = document.getElementById("sphere" + position.x.toFixed() + position.z.toFixed());
+        sphere.parentNode.removeChild(sphere);
+        var light = document.getElementById("light" + position.x.toFixed() + position.z.toFixed());
+        light.parentNode.removeChild(light);
+      }
+
+      AFRAME.registerComponent('spawn-entity', {
+        schema: {
+        color: {type: 'color', default: 'blue'}
+      },
+      init: function() {
+        // Allows the use of "self" as "this" within the listener without binding.
+        var self = this;
+        var remainingLandmarks = 10;
+        
+        this.el.addEventListener('click', function(e) {
+
+          if(remainingLandmarks > 0 && !(document.getElementById("sphere" +  + e.detail.intersection.point.x.toFixed() + e.detail.intersection.point.z.toFixed()))){
+            spawnLandmark(e.detail.intersection.point, self);
+            remainingLandmarks = remainingLandmarks - 1;
+          } else if(document.getElementById("sphere" +  + e.detail.intersection.point.x.toFixed() + e.detail.intersection.point.z.toFixed())) {
+            deleteLandmark(e.detail.intersection.point)
+            remainingLandmarks = remainingLandmarks + 1;
+          }
+          document.getElementById("remainingLandmarksValue").setAttribute('value', remainingLandmarks);
+        });
+      }
+    });
     </script>
 
   </head>
@@ -111,12 +156,14 @@
       <a-plane static-body src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
       <!-- Mouse cursor so we can click on the scene with mouse or touch. -->
-		  <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: [gui-interactable]"></a-entity>
+		  <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: [data-clickable]"></a-entity>
 		
       <!-- Hand controls -->
       <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: [gui-interactable]"></a-entity>
 		  <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: [gui-interactable]"></a-entity>
-
+    
+      <a-plane data-clickable height="114" width="114" spawn-entity="color: #f7fdff;" position="-1 1.6 -1" visible="false" side="double" rotation="-90 0 0"></a-plane>
+    
       <!-- GUI -->
       <a-gui-flex-container 
         id="hitMonsterButtonContainer"
@@ -128,6 +175,7 @@
         rotation="-90 0 0"
       >
         <a-gui-button
+          data-clickable
           id="hitMonsterButton"
           width="2.5" 
           height="0.7" 
@@ -154,6 +202,7 @@
         rotation="-90 0 0"
       >
         <a-gui-button
+          data-clickable
           id="collectCoinButton"
           width="2.5" 
           height="0.7" 
