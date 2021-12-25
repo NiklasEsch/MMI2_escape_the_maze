@@ -47,6 +47,7 @@
 
       function spawnLandmark(position, self){
         var sphere = document.createElement('a-sphere');
+        sphere.setAttribute('networked', "template:#landmark-template;attachTemplateToLocal:false;"); 
         sphere.setAttribute('id', "sphere" + position.x.toFixed() + position.z.toFixed());
         sphere.setAttribute('material', 'color', self.data.color);
         sphere.setAttribute('position', position);
@@ -128,6 +129,14 @@
                 ></a-sphere>
               </a-sphere>
             </a-entity>
+          </a-entity>
+        </template>
+        <template id="landmark-template">
+          <a-entity class="avatar">
+            <a-sphere class="landmark"
+              color="#5985ff"
+              scale="1 1 1"
+            ></a-sphere>
           </a-entity>
         </template>
         <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
