@@ -54,10 +54,10 @@
           </a-entity>
         </template>
         <template id="landmark-template">
-          <a-entity class="avatar">
-            <a-sphere class="landmark"
-              color="#5985ff"
-              scale="1 1 1"
+          <a-entity light="type: point; intensity: 5; distance: 10; decay: 2"> 
+            <a-sphere class="landmark" material="emissive: #cbfaff; emissiveIntensity: 10; opacity: 1"
+              color="#ffffff"
+              scale="0.6 0.6 0.6"
             ></a-sphere>
           </a-entity>
         </template>
@@ -76,14 +76,14 @@
       <a-sky height="2048" position="0 -1.6 0" radius="80" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 
       <!-- Maze -->
-      <a-entity obj-model="obj: #maze-obj" position="-5.5 -21 -7.4" scale="1.95 1.95 1.95"></a-entity>
+      <a-entity obj-model="obj: #maze-obj" material="color: #18314d; roughness: 1; metalness: 0" position="-5.5 -21 -7.4" scale="1.95 2.2 1.95"></a-entity>
 
       <!-- Light -->
       <a-light type="ambient" color="#999999"></a-light>
       <a-light type="point" intensity="0.6" position="42 44 84"></a-light>
 
       <!-- Ground -->
-      <a-plane static-body position="0 -1.6 0" src="#groundTexture" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
+      <a-plane static-body position="0 -1.6 0" src="#groundTexture" material="roughness: 1; metalness: 0" scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
       <!-- Collider system (Navigation mesh) of #maze-obj -->
       <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -1.7 0" visible="false"></a-entity> <!--edited nav mesh scale="2.88 0 2.88"-->
