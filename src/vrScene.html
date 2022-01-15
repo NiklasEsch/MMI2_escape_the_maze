@@ -104,10 +104,12 @@
       </template>
       <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
       <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+      <img id="coinTexture" src="./assets/coin/textures/Coin_Gold_albedo.png" crossorigin="anonymous">
       <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
       <a-asset-item id="maze-obj" src="./geometries/maze20x20.obj" crossorigin="anonymous"></a-asset-item>
       <a-asset-item id="monster-obj" src="./assets/obj/cat.obj" crossorigin="anonymous"></a-asset-item>
       <a-asset-item id="monster-mtl" src="./assets/obj/cat.mtl" crossorigin="anonymous"></a-asset-item>
+      <a-asset-item id="coin-obj" src="./assets/coin/Coin.obj" crossorigin="anonymous"></a-asset-item>
     </a-assets>
     <!-- Camera VR -->
     <a-entity id="playerPositionEntity" movement-controls="speed: 0.35; constrainToNavMesh: true"
@@ -156,6 +158,39 @@
     <a-entity hand-controls="hand: right"></a-entity> -->
     <a-entity oculus-touch-controls="hand: left" thumbstick-logging></a-entity>
     <a-entity oculus-touch-controls="hand: right" thumbstick-logging></a-entity>
+
+    <!--coins-->
+    <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-28 0 52" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-38 0 52" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-44 0 41" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-50 0 29" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-37 0 19" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-38 0 -10" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-21 0 -12" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-21 0 -33" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-32 0 -33" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     <a-entity obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"  position="-38 0 -55" 
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"
+     ></a-entity>
+     
   </a-scene>
 </body>
 
