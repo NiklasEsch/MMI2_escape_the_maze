@@ -8,6 +8,7 @@
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
   <script src="./geometries/example.js"></script>
   <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+  <script src="./index.js"></script>
   <script
     src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
@@ -17,6 +18,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
   <script src="/easyrtc/easyrtc.js"></script>
   <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
+  <script>
+    function updatePlayerPos() {
+      setInterval(function () {
+        var pos = document.getElementById("playerPositionEntity").getAttribute('position');
+        localStorage.setItem("playerPositionZ", pos.z);
+        localStorage.setItem("playerPositionX", pos.x);
+      }, 500);
+    }
+
+    window.onload = function () {
+      updatePlayerPos();
+    };
+  </script>
 </head>
 
 <body>
@@ -48,7 +62,7 @@
       <a-asset-item id="maze-obj" src="./geometries/maze20x20.obj" crossorigin="anonymous"></a-asset-item>
     </a-assets>
     <!-- Camera VR -->
-    <a-entity movement-controls="speed: 0.35; constrainToNavMesh: true"
+    <a-entity id ="playerPositionEntity" movement-controls="speed: 0.35; constrainToNavMesh: true"
       networked="template:#avatar-template;attachTemplateToLocal:false;" position="2 -1.6 60">
       <a-entity id="player" rotation="0 180 0" camera="active: true"
         networked="template:#avatar-template;attachTemplateToLocal:false;" position="0 1.6 0" look-controls></a-entity>

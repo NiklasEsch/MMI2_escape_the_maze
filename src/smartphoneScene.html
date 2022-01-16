@@ -7,6 +7,7 @@
   <meta name="description" content="Escape the Maze">
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
   <script src="./geometries/example.js"></script>
+  <script src="./index.js"></script>
   <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
   <script
     src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
@@ -19,6 +20,8 @@
   <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
   <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
   <script>
+    let LostGame = false;
+
     window.hitMonster = function () {
       console.log("Monster defeated");
     }
@@ -35,16 +38,43 @@
         seconds = parseInt(timer % 60, 10);
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.setAttribute('count-down', seconds);
-        if (--timer < 0) {
-          timer = duration;
+        
+        if (--timer < 0)
+        {
+            LostGame = true;
+            var endscreen = document.getElementById("EndScreenContainer");
+            var endscreenLabel = document.getElementById("EndScreenLabel");
+            endscreenLabel.setAttribute('value', "You lost the Game! You did not make it out in time.");
+            endscreen.setAttribute('visible', true );
         }
       }, 1000);
+    }
+    
+    function checkIfWon() {
+      setInterval(function () {
+        var posZ = parseInt(localStorage.getItem("playerPositionZ"));
+        var posX = parseInt(localStorage.getItem("playerPositionX"));
+
+        var reachedExit = ( (posZ < -59) && (-8 < posX) && (posX < -2) ); // coordinates for maze exit
+
+        if (reachedExit) 
+        {
+          if(!LostGame)
+          {
+            var endscreen = document.getElementById("EndScreenContainer");
+            var endscreenLabel = document.getElementById("EndScreenLabel");
+            endscreenLabel.setAttribute('value', "Congratulations, you made it out in time!");
+            endscreen.setAttribute('visible', true );
+          }
+        }
+      }, 500);
     }
 
     window.onload = function () {
       var countDownEntity = document.getElementById("timer"),
         duration = countDownEntity.getAttribute('count-down');
       startTimer(duration, countDownEntity);
+      checkIfWon();
     };
 
     function spawnLandmark(position, self) {
@@ -174,7 +204,6 @@
       </a-gui-button>
     </a-gui-flex-container>
 
-
     <a-gui-flex-container id="remainingTimeLabelContainer" flex-direction="column" justify-content="center"
       align-items="center" width="2.5" height="0.75" position="-6 70 -3.3" rotation="-90 0 0">
       <a-gui-label id="remainingTimeLabel" width="2.5" height="0.75" value="Remaining time" font-size="0.35"
@@ -204,6 +233,15 @@
         font-color="#F0F0F0" background-color="black">
       </a-gui-label>
     </a-gui-flex-container>
+
+    
+    <a-gui-flex-container id="EndScreenContainer" flex-direction="column" visible="false" justify-content="center"
+      align-items="center" width="5" height="5" position="0 71 -2" rotation="-90 0 0">
+      <a-gui-label id="EndScreenLabel" width="15" height="15" value="Congratulations - You Won!" font-size="0.35"
+        line-height="0.8" font-color="#F0F0F0" background-color="blue">
+      </a-gui-label>
+    </a-gui-flex-container>
+
 
     <a-gui-flex-container id="collectedCoinsLabelContainer" flex-direction="column" justify-content="center" width="2.5"
       height="0.75" position="6 70 -3.3" rotation="-90 0 0">
