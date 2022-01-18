@@ -85,5 +85,5 @@ io.on("connection", socket => {
 });
 
 webServer.listen(port, () => {
-  console.log("listening on http://localhost:" + port);
+  console.log("listening on https://localhost:" + port);
 });

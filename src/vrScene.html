@@ -30,16 +30,29 @@
     window.onload = function () {
       updatePlayerPos();
     };
+
+    AFRAME.registerComponent('collision-handler', {
+      init: function () {
+        this.el.addEventListener('collide', function (e) {
+          console.log('Player has collided with ', e.detail.body.el);
+          e.detail.target.el; // Original entity (playerEl).
+          e.detail.body.el; // Other entity, which playerEl touched.
+          e.detail.contact; // Stats about the collision (CANNON.ContactEquation).
+          e.detail.contact.ni; // Normal (direction) of the collision (CANNON.Vec3).
+        });
+      }
+    });
   </script>
 </head>
 
 <body>
-  <a-scene networked-scene="app: myApp; room: room1; debug: true;" physics="gravity: -9.8" inspector-plugin-recast>
+  <a-scene networked-scene="app: myApp; room: room1; debug: true;" physics="gravity: -9.8"
+    renderer="colorManagement: true" inspector-plugin-recast>
     <!--TODO: remove inspector in final build-->
     <a-assets>
       <template id="avatar-template">
         <a-entity class="avatar">
-          <a-sphere class="head" color="#5985ff" scale="0.9 1 0.8"></a-sphere>
+          <a-sphere class="head" color="#f44336" scale="0.9 1 0.8"></a-sphere>
           <a-entity class="face" position="0 0.1 0">
             <a-sphere class="eye" color="#efefef" position="0.32 0.2 -0.7" scale="0.24 0.24 0.24">
               <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
@@ -60,12 +73,16 @@
       <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
       <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
       <a-asset-item id="maze-obj" src="./geometries/maze20x20.obj" crossorigin="anonymous"></a-asset-item>
+      <a-asset-item id="monster-obj" src="./assets/obj/cat.obj" crossorigin="anonymous"></a-asset-item>
+      <a-asset-item id="monster-mtl" src="./assets/obj/cat.mtl" crossorigin="anonymous"></a-asset-item>
     </a-assets>
     <!-- Camera VR -->
-    <a-entity id ="playerPositionEntity" movement-controls="speed: 0.35; constrainToNavMesh: true"
+    <a-entity id="playerPositionEntity" movement-controls="speed: 0.35; constrainToNavMesh: true"
       networked="template:#avatar-template;attachTemplateToLocal:false;" position="2 -1.6 60">
       <a-entity id="player" rotation="0 180 0" camera="active: true"
-        networked="template:#avatar-template;attachTemplateToLocal:false;" position="0 1.6 0" look-controls></a-entity>
+        networked="template:#avatar-template;attachTemplateToLocal:false;" position="0 1.6 0" look-controls
+        collision-handler></a-entity>
+      <!-- kinematic-body collision-handler></a-entity> -->
     </a-entity>
     </a-entity>
 
@@ -87,6 +104,10 @@
     <!-- Collider system (Navigation mesh) of #maze-obj -->
     <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -1.7 0" visible="false"></a-entity>
     <!--edited nav mesh scale="2.88 0 2.88"-->
+
+    <!-- Monster -->
+    <a-entity obj-model="obj: #monster-obj" position="-37.875 -1.5 22.3" scale="0.8 0.8 0.8"
+      material="color: #674ea7; roughness: 1; metalness: 0" rotation="-90 0 0"></a-entity>
 
     <!--Tracked controls. -->
     <!-- <a-entity hand-controls="hand: left"></a-entity>

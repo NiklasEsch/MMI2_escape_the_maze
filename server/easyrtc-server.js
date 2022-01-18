@@ -92,5 +92,5 @@ easyrtc.listen(app, socketServer, null, (err, rtcRef) => {
 
 // Listen on port
 webServer.listen(port, () => {
-  console.log("listening on http://localhost:" + port);
+  console.log("listening on https://localhost:" + port);
 });
