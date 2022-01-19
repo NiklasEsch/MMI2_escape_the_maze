@@ -17,31 +17,64 @@
   <!--Networked-A-Frame-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
   <script src="/easyrtc/easyrtc.js"></script>
+  <script src="./GlobalStats.js"></script>
   <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
   <script>
+    var monsters = [...MonsterPositions];
+
     function updatePlayerPos() {
-      setInterval(function () {
-        var pos = document.getElementById("playerPositionEntity").getAttribute('position');
-        localStorage.setItem("playerPositionZ", pos.z);
-        localStorage.setItem("playerPositionX", pos.x);
-      }, 500);
+      var pos = document.getElementById("playerPositionEntity").getAttribute('position');
+      localStorage.setItem("playerPositionZ", pos.z);
+      localStorage.setItem("playerPositionX", pos.x);
+    }
+
+    function initializeMonsters() {
+      for (var i=0; i<MonsterPositions.length; i++) {
+        var monster = document.getElementById(MonsterPositions[i].name);
+        monster.setAttribute('position', MonsterPositions[i].pos);
+      }
+    }
+
+    function changeColorWhenNear() {
+      var playerPos = document.getElementById("playerPositionEntity").getAttribute('position');
+      var isNearMonster = '';
+      for (var i=0; i<monsters.length; i++) {
+        var mX = monsters[i].pos.x;
+        var mZ = monsters[i].pos.z;
+        var distance = Math.hypot((mX-playerPos.x), (mZ-playerPos.z));
+        var monster = document.getElementById(monsters[i].name);
+
+        if (distance < 8 && playerPos.z > mZ) {
+          color = '#990000';
+          isNearMonster = monsters[i].name;
+        } else {
+          color = '#674ea7';
+        }
+        var material = monster.setAttribute('material', {color: color});
+      }
+      localStorage.setItem("isNextToMonster", isNearMonster);
+    }
+
+    function removeMonster() {
+      var defeatedMonster = localStorage.getItem('defeatedMonster');
+      if (defeatedMonster) {
+        monsters = monsters.filter( v => v.name !== defeatedMonster);
+        var monster = document.getElementById(defeatedMonster);
+        monster.parentNode.removeChild(monster);
+        localStorage.setItem('defeatedMonster', '');
+      }
     }
 
     window.onload = function () {
-      updatePlayerPos();
+      initializeMonsters();
+      localStorage.clear();
+      setInterval(() => {
+        updatePlayerPos();
+        changeColorWhenNear();
+        removeMonster();
+      }, 1000);
     };
 
-    AFRAME.registerComponent('collision-handler', {
-      init: function () {
-        this.el.addEventListener('collide', function (e) {
-          console.log('Player has collided with ', e.detail.body.el);
-          e.detail.target.el; // Original entity (playerEl).
-          e.detail.body.el; // Other entity, which playerEl touched.
-          e.detail.contact; // Stats about the collision (CANNON.ContactEquation).
-          e.detail.contact.ni; // Normal (direction) of the collision (CANNON.Vec3).
-        });
-      }
-    });
   </script>
 </head>
 
@@ -106,8 +139,17 @@
     <!--edited nav mesh scale="2.88 0 2.88"-->
 
     <!-- Monster -->
-    <a-entity obj-model="obj: #monster-obj" position="-37.875 -1.5 22.3" scale="0.8 0.8 0.8"
-      material="color: #674ea7; roughness: 1; metalness: 0" rotation="-90 0 0"></a-entity>
+    <a-entity id="monster-0" obj-model="obj: #monster-obj" scale="0.7 0.7 0.7"
+    material="color: #674ea7" rotation="-90 0 0"></a-entity>
+
+    <a-entity id="monster-1" obj-model="obj: #monster-obj" scale="0.7 0.7 0.7"
+    material="color: #674ea7" rotation="-90 0 0"></a-entity>
+
+    <a-entity id="monster-2" obj-model="obj: #monster-obj" scale="0.7 0.7 0.7"
+    material="color: #674ea7" rotation="-90 0 0"></a-entity>
+
+    <a-entity id="monster-3" obj-model="obj: #monster-obj" scale="0.7 0.7 0.7"
+    material="color: #674ea7" rotation="-90 0 0"></a-entity>
 
     <!--Tracked controls. -->
     <!-- <a-entity hand-controls="hand: left"></a-entity>

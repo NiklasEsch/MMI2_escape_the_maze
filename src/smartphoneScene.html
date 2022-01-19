@@ -21,9 +21,13 @@
   <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
   <script>
     let LostGame = false;
+    let nearMonster = '';
 
     window.hitMonster = function () {
-      console.log("Monster defeated");
+      var coin = document.getElementById("collectedCoinsValue");
+      var coinValue = coin.getAttribute('value') - 3;
+      coin.setAttribute('value', coinValue);
+      localStorage.setItem('defeatedMonster', nearMonster);
     }
 
     window.collectCoin = function () {
@@ -67,13 +71,22 @@
             endscreen.setAttribute('visible', true );
           }
         }
-      }, 500);
+      }, 1000);
+    }
+
+    function showFeedButton() {
+      setInterval(() => {
+        nearMonster = localStorage.getItem("isNextToMonster");
+        var feedMonsterButton = document.getElementById("feedMonsterButton");
+        feedMonsterButton.setAttribute('visible', !!nearMonster);
+      }, 1000);
     }
 
     window.onload = function () {
       var countDownEntity = document.getElementById("timer"),
         duration = countDownEntity.getAttribute('count-down');
       startTimer(duration, countDownEntity);
+      showFeedButton();
       checkIfWon();
     };
 
@@ -188,10 +201,10 @@
       side="double" rotation="-90 0 0"></a-plane>
 
     <!-- GUI -->
-    <a-gui-flex-container id="hitMonsterButtonContainer" flex-direction="column" justify-content="center" width="2.5"
-      height="0.7" position="-6 70 3.5" rotation="-90 0 0">
+    <a-gui-flex-container id="feedMonsterButton" flex-direction="column" justify-content="center" width="2.5"
+      height="0.7" position="6 70 -1.5" rotation="-90 0 0" visible="false">
       <a-gui-button data-clickable id="hitMonsterButton" width="2.5" height="0.7" onclick="hitMonster" key-code="32"
-        value="Hit Monster" font-size="0.25" font-color="#F0F0F0" active-color="#414BB2" hover-color="#7bb8e8"
+        value="Feed Cat" font-size="0.25" font-color="#F0F0F0" active-color="#414BB2" hover-color="#7bb8e8"
         border-color="black" focus-color="black" background-color="#2D9BF0">
       </a-gui-button>
     </a-gui-flex-container>
@@ -248,7 +261,7 @@
       <a-gui-label id="collectedCoinsLabel" width="2.5" height="0.75" value="Collected Coins" font-size="0.35"
         line-height="0.8" font-color="#F0F0F0" background-color="black">
       </a-gui-label>
-      <a-gui-label id="collectedCoinsValue" width="2.5" height="0.5" value="0" font-size="0.35" line-height="0.8"
+      <a-gui-label id="collectedCoinsValue" width="2.5" height="0.5" value="9" font-size="0.35" line-height="0.8"
         font-color="#F0F0F0" background-color="black">
       </a-gui-label>
     </a-gui-flex-container>
