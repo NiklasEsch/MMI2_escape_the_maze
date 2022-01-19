@@ -22,6 +22,7 @@
   <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
   <script>
     let LostGame = false;
+    let WonGame = false;
     let nearMonster = '';
     let nearCoin = '';
     const feedingPrice = 3;
@@ -53,10 +54,11 @@
         if (--timer < 0)
         {
             LostGame = true;
-            var endscreen = document.getElementById("EndScreenContainer");
-            var endscreenLabel = document.getElementById("EndScreenLabel");
-            endscreenLabel.setAttribute('value', "You lost the Game! You did not make it out in time.");
-            endscreen.setAttribute('visible', true );
+            if (!WonGame)
+            {
+                var endscreen = document.getElementById("EndScreenContainerLoose");
+                endscreen.setAttribute('visible', true );
+            }
         }
       }, 1000);
     }
@@ -72,9 +74,8 @@
         {
           if(!LostGame)
           {
-            var endscreen = document.getElementById("EndScreenContainer");
-            var endscreenLabel = document.getElementById("EndScreenLabel");
-            endscreenLabel.setAttribute('value', "Congratulations, you made it out in time!");
+            WonGame = true;
+            var endscreen = document.getElementById("EndScreenContainerWin");
             endscreen.setAttribute('visible', true );
           }
         }
@@ -283,12 +284,19 @@
     </a-gui-flex-container>
 
     
-    <a-gui-flex-container id="EndScreenContainer" flex-direction="column" visible="false" justify-content="center"
+    <a-gui-flex-container id="EndScreenContainerWin" flex-direction="column" visible="false" justify-content="center"
       align-items="center" width="5" height="5" position="0 71 -2" rotation="-90 0 0">
-      <a-gui-label id="EndScreenLabel" width="15" height="15" value="Congratulations - You Won!" font-size="0.35"
-        line-height="0.8" font-color="#F0F0F0" background-color="blue">
+      <a-gui-label id="EndScreenLabelWin" width="15" height="15" value="Congratulations - You Won!" font-size="0.35"
+        line-height="0.8" font-color="#F0F0F0" background-color="green">
       </a-gui-label>
     </a-gui-flex-container>
+
+    <a-gui-flex-container id="EndScreenContainerLoose" flex-direction="column" visible="false" justify-content="center"
+    align-items="center" width="5" height="5" position="0 71 -2" rotation="-90 0 0">
+    <a-gui-label id="EndScreenLabelLoose" width="15" height="15" value="Sorry - You LOST!" font-size="0.35"
+      line-height="0.8" font-color="#F0F0F0" background-color="red">
+    </a-gui-label>
+  </a-gui-flex-container>
 
 
     <a-gui-flex-container id="collectedCoinsLabelContainer" flex-direction="column" justify-content="center" width="2.5"
