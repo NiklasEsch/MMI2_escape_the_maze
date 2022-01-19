@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   <script src="httpsy://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   <script src="./multitouch-look-controls.js"></script>
+  <script src="./GlobalStats.js"></script>
   <!--Networked-A-Frame-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
   <script src="/easyrtc/easyrtc.js"></script>
@@ -22,18 +23,24 @@
   <script>
     let LostGame = false;
     let nearMonster = '';
+    let nearCoin = '';
+    const feedingPrice = 3;
 
     window.hitMonster = function () {
       var coin = document.getElementById("collectedCoinsValue");
-      var coinValue = coin.getAttribute('value') - 3;
-      coin.setAttribute('value', coinValue);
-      localStorage.setItem('defeatedMonster', nearMonster);
+      var value = coin.getAttribute('value');
+      if (value >= feedingPrice) {
+        var coinValue = value - feedingPrice;
+        coin.setAttribute('value', coinValue);
+        localStorage.setItem('defeatedMonster', nearMonster);
+      }
     }
 
     window.collectCoin = function () {
-      var coinValue = document.getElementById("collectedCoinsValue").getAttribute('value');
-      newCoinValue = +coinValue + 1;
-      document.getElementById("collectedCoinsValue").setAttribute('value', newCoinValue);
+      var coin = document.getElementById("collectedCoinsValue");
+      var coinValue = coin.getAttribute('value') + 1;
+      coin.setAttribute('value', coinValue);
+      localStorage.setItem('collectedCoin', nearCoin);
     }
 
     function startTimer(duration, display) {
@@ -74,19 +81,47 @@
       }, 1000);
     }
 
+    function displayButton(id, bool) {
+      var button = document.getElementById(id);
+      button.setAttribute('visible', bool);
+    }
+
     function showFeedButton() {
       setInterval(() => {
+        var coinValue = document.getElementById("collectedCoinsValue").getAttribute('value');
         nearMonster = localStorage.getItem("isNextToMonster");
-        var feedMonsterButton = document.getElementById("feedMonsterButton");
-        feedMonsterButton.setAttribute('visible', !!nearMonster);
-      }, 1000);
+        displayButton("feedMonsterButton", !!nearMonster);
+
+        var button = document.getElementById('monsterButton');
+        if (coinValue < feedingPrice) {
+          button.setAttribute('value', "Not enough coins to feed cat!");
+          button.setAttribute('background-color', '#cc0000');
+          button.setAttribute('active-color', 'none');
+          button.setAttribute('hover-color', 'none');
+        } else {
+          button.setAttribute('value', "Feed cat");
+          button.setAttribute('background-color', '"#2D9BF0"');
+          button.setAttribute('active-color', '#7bb8e8');
+          button.setAttribute('hover-color', '#7bb8e8');
+        }
+      }, 500);
     }
+
+    function showCollectButton() {
+      setInterval(() => {
+        nearCoin = localStorage.getItem("isNextToCoin");
+        displayButton("collectCoinButtonContainer", !!nearCoin);
+      }, 500);
+    }
+
+    
 
     window.onload = function () {
       var countDownEntity = document.getElementById("timer"),
         duration = countDownEntity.getAttribute('count-down');
       startTimer(duration, countDownEntity);
       showFeedButton();
+      showCollectButton();
       checkIfWon();
     };
 
@@ -203,16 +238,16 @@
     <!-- GUI -->
     <a-gui-flex-container id="feedMonsterButton" flex-direction="column" justify-content="center" width="2.5"
       height="0.7" position="6 70 -1.5" rotation="-90 0 0" visible="false">
-      <a-gui-button data-clickable id="hitMonsterButton" width="2.5" height="0.7" onclick="hitMonster" key-code="32"
-        value="Feed Cat" font-size="0.25" font-color="#F0F0F0" active-color="#414BB2" hover-color="#7bb8e8"
+      <a-gui-button data-clickable id="monsterButton" width="2.5" height="0.7" onclick="hitMonster" key-code="32"
+        value="Feed Cat" font-size="0.25" font-color="#F0F0F0" active-color="#7bb8e8" hover-color="#7bb8e8"
         border-color="black" focus-color="black" background-color="#2D9BF0">
       </a-gui-button>
     </a-gui-flex-container>
 
     <a-gui-flex-container id="collectCoinButtonContainer" flex-direction="column" justify-content="center" width="2.5"
-      height="0.7" position="6 70 3.5" rotation="-90 0 0">
+      height="0.7" position="6 70 0" rotation="-90 0 0">
       <a-gui-button data-clickable id="collectCoinButton" width="2.5" height="0.7" onclick="collectCoin" key-code="31"
-        value="Collect Coin" font-size="0.25" font-color="#F0F0F0" active-color="#414BB2" hover-color="#7bb8e8"
+        value="Collect Coin" font-size="0.25" font-color="#F0F0F0" active-color="#7bb8e8" hover-color="#7bb8e8"
         border-color="black" focus-color="black" background-color="#2D9BF0">
       </a-gui-button>
     </a-gui-flex-container>
@@ -261,7 +296,7 @@
       <a-gui-label id="collectedCoinsLabel" width="2.5" height="0.75" value="Collected Coins" font-size="0.35"
         line-height="0.8" font-color="#F0F0F0" background-color="black">
       </a-gui-label>
-      <a-gui-label id="collectedCoinsValue" width="2.5" height="0.5" value="9" font-size="0.35" line-height="0.8"
+      <a-gui-label id="collectedCoinsValue" width="2.5" height="0.5" value="0" font-size="0.35" line-height="0.8"
         font-color="#F0F0F0" background-color="black">
       </a-gui-label>
     </a-gui-flex-container>

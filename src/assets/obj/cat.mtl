@@ -12,5 +12,5 @@ newmtl 20430_Cat
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.2070 0.2070 0.2070
 	Ke 0.7000 0.7000 0.7000
-	map_Ka garfield-texture.jpg
+	
 	map_Kd garfield-texture.jpg
