@@ -39,7 +39,7 @@
 
     window.collectCoin = function () {
       var coin = document.getElementById("collectedCoinsValue");
-      var coinValue = coin.getAttribute('value') + 1;
+      var coinValue = parseInt(coin.getAttribute('value')) + 1;
       coin.setAttribute('value', coinValue);
       localStorage.setItem('collectedCoin', nearCoin);
     }
@@ -47,7 +47,7 @@
     function startTimer(duration, display) {
       var timer = duration, minutes, seconds;
       setInterval(function () {
-        seconds = parseInt(timer % 60, 10);
+        seconds = parseInt(timer, 10);
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.setAttribute('count-down', seconds);
         
@@ -258,7 +258,7 @@
       <a-gui-label id="remainingTimeLabel" width="2.5" height="0.75" value="Remaining time" font-size="0.35"
         line-height="0.8" font-color="#F0F0F0" background-color="black">
       </a-gui-label>
-      <a-gui-circle-timer id="timer" height="0.75" count-down="60" callback="timedout" background-color="#999">
+      <a-gui-circle-timer id="timer" height="0.75" count-down="240" callback="timedout" background-color="#999">
       </a-gui-circle-timer>
       <!--<a-gui-label
           id="remainingTimeValue"
