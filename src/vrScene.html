@@ -95,6 +95,9 @@
         var monster = document.getElementById(defeatedMonster);
         monster.parentNode.removeChild(monster);
         localStorage.setItem('defeatedMonster', '');
+        var navmesh = document.getElementById("navmesh");
+        navmesh.setAttribute('gltf-model' ,"/assets/navmesh/maze_navmesh.gltf");
+        navmesh.components['nav-mesh'].loadNavMesh();
       }
     }
 
@@ -152,7 +155,8 @@
       <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
       <img id="coinTexture" src="./assets/coin/textures/Coin_Gold_albedo.png" crossorigin="anonymous">
       <img id="monsterTexture" src="./assets/obj/garfield-texture.jpg" crossorigin="anonymous">
-      <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
+      <a-asset-item id="maze-nav-mesh" src="/assets/navmesh/maze_navmesh_m0_m1_m2_m3.gltf"></a-asset-item>
+      <a-asset-item id="maze-nav-mesh-without-monsters" src="/assets/navmesh/maze_navmesh.gltf"></a-asset-item>
       <a-asset-item id="maze-obj" src="./geometries/maze20x20.obj" crossorigin="anonymous"></a-asset-item>
       <a-asset-item id="monster-obj" src="./assets/obj/cat.obj" crossorigin="anonymous"></a-asset-item>
       <a-asset-item id="monster-mtl" src="./assets/obj/cat.mtl" crossorigin="anonymous"></a-asset-item>
@@ -184,7 +188,7 @@
       scale="200 200 1" repeat="1000 1000 1" rotation="-90 0 0"></a-plane>
 
     <!-- Collider system (Navigation mesh) of #maze-obj -->
-    <a-entity gltf-model="#maze-nav-mesh" nav-mesh position="0 -1.7 0" visible="false"></a-entity>
+    <a-entity id="navmesh" gltf-model="#maze-nav-mesh" nav-mesh position="0 -1.7 0" visible="false"></a-entity>
     <!--edited nav mesh scale="2.88 0 2.88"-->
 
     <!-- Monster -->
@@ -226,6 +230,28 @@
     <a-entity id="coin-8" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
       animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
     <a-entity id="coin-9" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-10" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-11" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-12" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-13" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-14" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-15" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-16" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-17" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-18" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-19" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity id="coin-20" obj-model="obj: #coin-obj" material="src: #coinTexture; metalness: 0.5"
       animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true" scale="0.5 0.5 0.5"></a-entity>
 
   </a-scene>

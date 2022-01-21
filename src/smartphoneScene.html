@@ -47,6 +47,14 @@
     function startTimer(duration, display) {
       var timer = duration, minutes, seconds;
       setInterval(function () {
+
+        //for using the label instead of the circle timer. 'count-down' needs to be replaced with value in different places as well!
+        //minutes = parseInt(timer / 60)
+        //seconds = parseInt(timer % 60, 10);
+        //seconds = seconds < 10 ? "0" + seconds : seconds;
+        //minutesAndSeconds = minutes + ":" + seconds
+        //display.setAttribute('value', minutesAndSeconds);
+
         seconds = parseInt(timer, 10);
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.setAttribute('count-down', seconds);

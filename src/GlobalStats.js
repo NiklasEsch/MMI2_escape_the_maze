@@ -114,5 +114,93 @@ const CoinsPositions = [
             z: 52
         }
     },
+    {
+        name: 'coin-10',
+        pos: {
+            x: 12,
+            y: 0,
+            z: 41
+        }
+    },
+    {
+        name: 'coin-11',
+        pos: {
+            x: -9,
+            y: 0,
+            z: 12
+        }
+    },
+    {
+        name: 'coin-12',
+        pos: {
+            x: -4,
+            y: 0,
+            z: 24
+        }
+    },
+    {
+        name: 'coin-13',
+        pos: {
+            x: 45,
+            y: 0,
+            z: 18
+        }
+    },
+    {
+        name: 'coin-14',
+        pos: {
+            x: 30,
+            y: 0,
+            z: 46
+        }
+    },
+    {
+        name: 'coin-15',
+        pos: {
+            x: 41,
+            y: 0,
+            z: -9
+        }
+    },
+    {
+        name: 'coin-16',
+        pos: {
+            x: 7,
+            y: 0,
+            z: -32
+        }
+    },
+    {
+        name: 'coin-17',
+        pos: {
+            x: -55,
+            y: 0,
+            z: -4
+        }
+    },
+    {
+        name: 'coin-18',
+        pos: {
+            x: 2,
+            y: 0,
+            z: 0
+        }
+    },
+    {
+        name: 'coin-19',
+        pos: {
+            x: 19,
+            y: 0,
+            z: -33
+        }
+    },
+    {
+        name: 'coin-20',
+        pos: {
+            x: 48,
+            y: 0,
+            z: -39
+        }
+    },
 
 ];
