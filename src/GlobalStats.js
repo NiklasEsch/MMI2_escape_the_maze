@@ -1,6 +1,7 @@
 const MonsterPositions = [
     {
         name: 'monster-0',
+        id: '_m0',
         pos: {
             x: -38.7,
             y: -1.5,
@@ -9,26 +10,29 @@ const MonsterPositions = [
     },
     {
         name: 'monster-1',
+        id: '_m1',
         pos: {
-            x: 36.3,
+            x: 35.3,
             y: -1.5,
-            z: -4.8
+            z: -3.9
         }
     },
     {
         name: 'monster-2',
+        id: '_m2',
         pos: {
             x: -32.6,
             y: -1.5,
-            z: -39.6    
+            z: -38.7    
         }
      },
     {
         name: 'monster-3',
+        id: '_m3',
         pos: {
-            x: 25.2,
+            x: 23.9,
             y: -1.5,
-            z: -55.6    
+            z: -55.2    
         }
     }
 ];

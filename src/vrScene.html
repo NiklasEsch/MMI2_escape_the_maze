@@ -94,8 +94,13 @@
         monsters = monsters.filter( v => v.name !== data);
         var monster = document.getElementById(data);
         monster.parentNode.removeChild(monster);
+        var navmeshPath = "/assets/navmesh/maze_navmesh";
+        for(var i=0; i<monsters.length; i++){
+          navmeshPath = navmeshPath + monsters[i].id;
+        }
+        navmeshPath = navmeshPath + ".gltf";
         var navmesh = document.getElementById("navmesh");
-        navmesh.setAttribute('gltf-model' ,"/assets/navmesh/maze_navmesh.gltf");
+        navmesh.setAttribute('gltf-model' , navmeshPath);
         navmesh.components['nav-mesh'].loadNavMesh();
         NAF.connection.broadcastData("defeatedMonster", '');
       }
