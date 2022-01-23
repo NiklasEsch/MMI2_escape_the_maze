@@ -26,6 +26,7 @@
     let nearMonster = '';
     let nearCoin = '';
     const feedingPrice = 3;
+    landmarkRadius = 1;
 
   
     window.hitMonster = function () {
@@ -132,16 +133,18 @@
       checkIfWon();
     };
 
-    function spawnLandmark(position, self) {
+    function spawnLandmark(positionX, positionY, positionZ, self) {
       var sphere = document.createElement('a-sphere');
       sphere.setAttribute('networked', "template:#landmark-template;attachTemplateToLocal:false;");
-      sphere.setAttribute('id', "sphere" + position.x.toFixed() + position.z.toFixed());
+      sphere.setAttribute('id', "sphere" + positionX + positionZ);
       sphere.setAttribute('material', 'color', self.data.color);
+      sphere.setAttribute('radius', landmarkRadius);
+      position = positionX + ", " + positionY + ", " + positionZ;
       sphere.setAttribute('position', position);
       self.el.sceneEl.appendChild(sphere);
 
       var light = document.createElement('a-light');
-      light.setAttribute('id', "light" + position.x.toFixed() + position.z.toFixed());
+      light.setAttribute('id', "light" + positionX + positionZ);
       light.setAttribute('type', 'point')
       light.setAttribute('intensity', '0.4');
       light.setAttribute('distance', '50');
@@ -149,10 +152,10 @@
       self.el.sceneEl.appendChild(light);
     }
 
-    function deleteLandmark(position) {
-      var sphere = document.getElementById("sphere" + position.x.toFixed() + position.z.toFixed());
+    function deleteLandmark(positionX, positionY, positionZ) {
+      var sphere = document.getElementById("sphere" + positionX + positionZ);
       sphere.parentNode.removeChild(sphere);
-      var light = document.getElementById("light" + position.x.toFixed() + position.z.toFixed());
+      var light = document.getElementById("light" + positionX + positionZ);
       light.parentNode.removeChild(light);
     }
 
@@ -167,11 +170,15 @@
 
         this.el.addEventListener('click', function (e) {
 
-          if (remainingLandmarks > 0 && !(document.getElementById("sphere" + + e.detail.intersection.point.x.toFixed() + e.detail.intersection.point.z.toFixed()))) {
-            spawnLandmark(e.detail.intersection.point, self);
+          positionX = Math.round(e.detail.intersection.point.x / (landmarkRadius*2)) * (landmarkRadius*2)
+          positionY = Math.round(e.detail.intersection.point.y / (landmarkRadius*2)) * (landmarkRadius*2)
+          positionZ = Math.round(e.detail.intersection.point.z / (landmarkRadius*2)) * (landmarkRadius*2)
+
+          if (remainingLandmarks > 0 && !(document.getElementById("sphere" + positionX + positionZ))) {
+            spawnLandmark(positionX, positionY, positionZ, self);
             remainingLandmarks = remainingLandmarks - 1;
-          } else if (document.getElementById("sphere" + + e.detail.intersection.point.x.toFixed() + e.detail.intersection.point.z.toFixed())) {
-            deleteLandmark(e.detail.intersection.point)
+          } else if (document.getElementById("sphere" + positionX + positionZ)) {
+            deleteLandmark(positionX, positionY, positionZ)
             remainingLandmarks = remainingLandmarks + 1;
           }
           document.getElementById("remainingLandmarksValue").setAttribute('value', remainingLandmarks);
@@ -239,7 +246,7 @@
     <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: [gui-interactable]"></a-entity>
 
     <!-- Plane detecting clicks for spawning landmarks -->
-    <a-plane data-clickable height="114" width="114" spawn-entity="color: #f7fdff;" position="-1 2.6-1" visible="false"
+    <a-plane data-clickable height="114" width="114" spawn-entity="color: #f7fdff;" position="-1 2.6 -1" visible="false"
       side="double" rotation="-90 0 0"></a-plane>
 
     <!-- GUI -->
