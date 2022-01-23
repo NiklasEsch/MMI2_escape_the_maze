@@ -51,17 +51,11 @@
     function startTimer(duration, display) {
       var timer = duration, minutes, seconds;
       setInterval(function () {
-
-        //for using the label instead of the circle timer. 'count-down' needs to be replaced with value in different places as well!
-        //minutes = parseInt(timer / 60)
-        //seconds = parseInt(timer % 60, 10);
-        //seconds = seconds < 10 ? "0" + seconds : seconds;
-        //minutesAndSeconds = minutes + ":" + seconds
-        //display.setAttribute('value', minutesAndSeconds);
-
-        seconds = parseInt(timer, 10);
+        minutes = parseInt(timer / 60)
+        seconds = parseInt(timer % 60, 10);
         seconds = seconds < 10 ? "0" + seconds : seconds;
-        display.setAttribute('count-down', seconds);
+        minutesAndSeconds = minutes + ":" + seconds
+        display.setAttribute('value', minutesAndSeconds);
         
         if (--timer < 0)
         {
@@ -133,7 +127,7 @@
 
     window.onload = function () {
       var countDownEntity = document.getElementById("timer"),
-        duration = countDownEntity.getAttribute('count-down');
+        duration = countDownEntity.getAttribute('value');
       startTimer(duration, countDownEntity);
       checkIfWon();
     };
@@ -270,19 +264,17 @@
       <a-gui-label id="remainingTimeLabel" width="2.5" height="0.75" value="Remaining time" font-size="0.35"
         line-height="0.8" font-color="#F0F0F0" background-color="black">
       </a-gui-label>
-      <a-gui-circle-timer id="timer" height="0.75" count-down="240" callback="timedout" background-color="#999">
-      </a-gui-circle-timer>
-      <!--<a-gui-label
-          id="remainingTimeValue"
+      <a-gui-label
+          id="timer"
           width="2.5" 
           height="0.5"
-          value="00:35"
+          value="240"
           font-size="0.35"
           line-height="0.8"
           font-color="#F0F0F0"
           background-color="black"
         >
-        </a-gui-label>-->
+        </a-gui-label>
     </a-gui-flex-container>
 
     <a-gui-flex-container id="remainingLandmarksLabelContainer" flex-direction="column" justify-content="center"
