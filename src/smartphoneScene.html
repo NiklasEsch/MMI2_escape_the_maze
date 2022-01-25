@@ -27,13 +27,15 @@
     let nearCoin = '';
     const feedingPrice = 3;
 
+  
     window.hitMonster = function () {
       var coin = document.getElementById("collectedCoinsValue");
       var value = coin.getAttribute('value');
       if (value >= feedingPrice) {
         var coinValue = value - feedingPrice;
         coin.setAttribute('value', coinValue);
-        localStorage.setItem('defeatedMonster', nearMonster);
+        displayButton('feedMonsterButton', false);
+        NAF.connection.broadcastData("defeatedMonster", nearMonster);
       }
     }
 
@@ -42,6 +44,8 @@
       var coinValue = parseInt(coin.getAttribute('value')) + 1;
       coin.setAttribute('value', coinValue);
       localStorage.setItem('collectedCoin', nearCoin);
+      displayButton('collectCoinButtonContainer', false);
+      NAF.connection.broadcastData("collectedCoin", nearCoin);
     }
 
     function startTimer(duration, display) {
@@ -95,11 +99,13 @@
       button.setAttribute('visible', bool);
     }
 
-    function showFeedButton() {
-      setInterval(() => {
+    //show feed cat button when other player near cat
+    NAF.connection.subscribeToDataChannel('isNextToMonster', (senderId, dataType, data, targetId) => {
+      if (data) {
+        nearMonster = data;
+        console.log('------ isNextToMonster-----', data);
         var coinValue = document.getElementById("collectedCoinsValue").getAttribute('value');
-        nearMonster = localStorage.getItem("isNextToMonster");
-        displayButton("feedMonsterButton", !!nearMonster);
+        displayButton("feedMonsterButton", true);
 
         var button = document.getElementById('monsterButton');
         if (coinValue < feedingPrice) {
@@ -113,24 +119,22 @@
           button.setAttribute('active-color', '#7bb8e8');
           button.setAttribute('hover-color', '#7bb8e8');
         }
-      }, 500);
-    }
+      }
+    });
 
-    function showCollectButton() {
-      setInterval(() => {
-        nearCoin = localStorage.getItem("isNextToCoin");
-        displayButton("collectCoinButtonContainer", !!nearCoin);
-      }, 500);
-    }
-
-    
+    //show collect Coin button when other player near coin
+    NAF.connection.subscribeToDataChannel('isNextToCoin', (senderId, dataType, data, targetId) => {
+      if (data) {
+        nearCoin = data;
+        console.log('------ isNextToCoin-----', data);
+        displayButton("collectCoinButtonContainer", true);
+      }
+    });
 
     window.onload = function () {
       var countDownEntity = document.getElementById("timer"),
         duration = countDownEntity.getAttribute('count-down');
       startTimer(duration, countDownEntity);
-      showFeedButton();
-      showCollectButton();
       checkIfWon();
     };
 
@@ -254,7 +258,7 @@
     </a-gui-flex-container>
 
     <a-gui-flex-container id="collectCoinButtonContainer" flex-direction="column" justify-content="center" width="2.5"
-      height="0.7" position="6 70 0" rotation="-90 0 0">
+      height="0.7" position="6 70 0" rotation="-90 0 0" visible="false">
       <a-gui-button data-clickable id="collectCoinButton" width="2.5" height="0.7" onclick="collectCoin" key-code="31"
         value="Collect Coin" font-size="0.25" font-color="#F0F0F0" active-color="#7bb8e8" hover-color="#7bb8e8"
         border-color="black" focus-color="black" background-color="#2D9BF0">

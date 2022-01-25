@@ -65,7 +65,7 @@
         }
         monster.setAttribute('material', {color: color});
       }
-      localStorage.setItem("isNextToMonster", isNearMonster);
+      NAF.connection.broadcastData("isNextToMonster", isNearMonster);
     }
 
     function changeCoinSizeWhenNear() {
@@ -85,31 +85,31 @@
         }
         coin.setAttribute('material', {color: color});
       }
-      localStorage.setItem("isNextToCoin", isNearCoin);
+      NAF.connection.broadcastData("isNextToCoin", isNearCoin);
     }
 
-    function removeMonster() {
-      var defeatedMonster = localStorage.getItem('defeatedMonster');
-      if (defeatedMonster) {
-        monsters = monsters.filter( v => v.name !== defeatedMonster);
-        var monster = document.getElementById(defeatedMonster);
+    //remove defeated monster von VR scene
+    NAF.connection.subscribeToDataChannel('defeatedMonster', (senderId, dataType, data, targetId) => {
+      if (data) {
+        monsters = monsters.filter( v => v.name !== data);
+        var monster = document.getElementById(data);
         monster.parentNode.removeChild(monster);
-        localStorage.setItem('defeatedMonster', '');
         var navmesh = document.getElementById("navmesh");
         navmesh.setAttribute('gltf-model' ,"/assets/navmesh/maze_navmesh.gltf");
         navmesh.components['nav-mesh'].loadNavMesh();
+        NAF.connection.broadcastData("defeatedMonster", '');
       }
-    }
+    });
 
-    function removeCoin() {
-      var collectedCoin = localStorage.getItem('collectedCoin');
-      if (collectedCoin) {
-        coins = coins.filter( v => v.name !== collectedCoin);
-        var coin = document.getElementById(collectedCoin);
+    //remove collected coin frm VR scene
+    NAF.connection.subscribeToDataChannel('collectedCoin', (senderId, dataType, data, targetId) => {
+      if (data) {
+        coins = coins.filter( v => v.name !== data);
+        var coin = document.getElementById(data);
         coin.parentNode.removeChild(coin);
-        localStorage.setItem('collectedCoin', '');
+        NAF.connection.broadcastData("collectedCoin", '');
       }
-    }
+    });
 
     window.onload = function () {
       initializeGameItems();
@@ -119,8 +119,6 @@
         updatePlayerPos();
         changeMonsterColorWhenNear();
         changeCoinSizeWhenNear();
-        removeMonster();
-        removeCoin();
       }, 1000);
     };
 
