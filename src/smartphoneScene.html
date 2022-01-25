@@ -96,11 +96,10 @@
 
     //show feed cat button when other player near cat
     NAF.connection.subscribeToDataChannel('isNextToMonster', (senderId, dataType, data, targetId) => {
-      if (data) {
         nearMonster = data;
         console.log('------ isNextToMonster-----', data);
         var coinValue = document.getElementById("collectedCoinsValue").getAttribute('value');
-        displayButton("feedMonsterButton", true);
+        displayButton("feedMonsterButton", !!data);
 
         var button = document.getElementById('monsterButton');
         if (coinValue < feedingPrice) {
@@ -114,16 +113,13 @@
           button.setAttribute('active-color', '#7bb8e8');
           button.setAttribute('hover-color', '#7bb8e8');
         }
-      }
     });
 
     //show collect Coin button when other player near coin
     NAF.connection.subscribeToDataChannel('isNextToCoin', (senderId, dataType, data, targetId) => {
-      if (data) {
         nearCoin = data;
         console.log('------ isNextToCoin-----', data);
-        displayButton("collectCoinButtonContainer", true);
-      }
+        displayButton("collectCoinButtonContainer", !!data);
     });
 
     window.onload = function () {
