@@ -21,8 +21,8 @@
   <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
   <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
   <script>
-    let LostGame = false;
-    let WonGame = false;
+    let timeIsUp = false;
+    let isOutOfMaze = false;
     let nearMonster = '';
     let nearCoin = '';
     const feedingPrice = 3;
@@ -57,37 +57,24 @@
         seconds = seconds < 10 ? "0" + seconds : seconds;
         minutesAndSeconds = minutes + ":" + seconds
         display.setAttribute('value', minutesAndSeconds);
-        
-        if (--timer < 0)
-        {
-            LostGame = true;
-            if (!WonGame)
-            {
-                var endscreen = document.getElementById("EndScreenContainerLoose");
-                endscreen.setAttribute('visible', true );
-            }
+        timeIsUp = --timer < 0;
+
+        if (timeIsUp && !isOutOfMaze) {
+          var endscreen = document.getElementById("EndScreenContainerLoose");
+              endscreen.setAttribute('visible', true );
         }
+        
       }, 1000);
     }
     
-    function checkIfWon() {
-      setInterval(function () {
-        var posZ = parseInt(localStorage.getItem("playerPositionZ"));
-        var posX = parseInt(localStorage.getItem("playerPositionX"));
-
-        var reachedExit = ( (posZ < -59) && (-8 < posX) && (posX < -2) ); // coordinates for maze exit
-
-        if (reachedExit) 
-        {
-          if(!LostGame)
-          {
-            WonGame = true;
-            var endscreen = document.getElementById("EndScreenContainerWin");
+    NAF.connection.subscribeToDataChannel('hasReachedExit', (senderId, dataType, data, targetId) => {
+      isOutOfMaze = data;
+      if (!timeIsUp && isOutOfMaze) {
+        var endscreen = document.getElementById("EndScreenContainerWin");
             endscreen.setAttribute('visible', true );
-          }
-        }
-      }, 1000);
-    }
+      }
+    })
+    
 
     function displayButton(id, bool) {
       var button = document.getElementById(id);
@@ -126,7 +113,6 @@
       var countDownEntity = document.getElementById("timer"),
         duration = countDownEntity.getAttribute('value');
       startTimer(duration, countDownEntity);
-      checkIfWon();
     };
 
     function spawnLandmark(positionX, positionY, positionZ, self) {
