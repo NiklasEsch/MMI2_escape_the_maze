@@ -79,6 +79,15 @@
     function displayButton(id, bool) {
       var button = document.getElementById(id);
       button.setAttribute('visible', bool);
+      var block = document.getElementById("blockButtonsContainer");
+      if(bool)
+      {
+        block.setAttribute('position', '4 90 -0.5');
+      } 
+      else
+      {
+        block.setAttribute('position', '4 72 -0.5');
+      }
     }
 
     //show feed cat button when other player near cat
@@ -247,6 +256,12 @@
         border-color="black" focus-color="black" background-color="#2D9BF0">
       </a-gui-button>
     </a-gui-flex-container>
+
+    <a-gui-flex-container data-clickable id="blockButtonsContainer" flex-direction="column" visible="false" justify-content="center" width="3"
+    height="3" position="4 72 -0.5" rotation="-90 0 0">
+    <a-gui-button width="3" height="3" >
+      </a-gui-button>
+   </a-gui-flex-container>
 
     <a-gui-flex-container id="remainingTimeLabelContainer" flex-direction="column" justify-content="center"
       align-items="center" width="2.5" height="0.75" position="-6 70 -3.3" rotation="-90 0 0">
