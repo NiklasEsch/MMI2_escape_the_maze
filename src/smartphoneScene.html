@@ -32,7 +32,7 @@
     window.hitMonster = function () {
       var coin = document.getElementById("collectedCoinsValue");
       var value = coin.getAttribute('value');
-      if (value >= feedingPrice) {
+      if (value >= feedingPrice && !!nearMonster) {
         var coinValue = value - feedingPrice;
         coin.setAttribute('value', coinValue);
         displayButton('feedMonsterButton', false);
@@ -41,12 +41,14 @@
     }
 
     window.collectCoin = function () {
-      var coin = document.getElementById("collectedCoinsValue");
-      var coinValue = parseInt(coin.getAttribute('value')) + 1;
-      coin.setAttribute('value', coinValue);
-      localStorage.setItem('collectedCoin', nearCoin);
-      displayButton('collectCoinButtonContainer', false);
-      NAF.connection.broadcastData("collectedCoin", nearCoin);
+      if (!!nearCoin) {
+        var coin = document.getElementById("collectedCoinsValue");
+        var coinValue = parseInt(coin.getAttribute('value')) + 1;
+        coin.setAttribute('value', coinValue);
+        localStorage.setItem('collectedCoin', nearCoin);
+        displayButton('collectCoinButtonContainer', false);
+        NAF.connection.broadcastData("collectedCoin", nearCoin);
+      }
     }
 
     function startTimer(duration, display) {
@@ -79,15 +81,6 @@
     function displayButton(id, bool) {
       var button = document.getElementById(id);
       button.setAttribute('visible', bool);
-      var block = document.getElementById("blockButtonsContainer");
-      if(bool)
-      {
-        block.setAttribute('position', '4 90 -0.5');
-      } 
-      else
-      {
-        block.setAttribute('position', '4 72 -0.5');
-      }
     }
 
     //show feed cat button when other player near cat
@@ -186,7 +179,7 @@
     <a-assets>
       <template id="avatar-template">
         <a-entity class="avatar">
-          <a-sphere class="head" color="#5985ff" scale="0.9 1 0.8"></a-sphere>
+          <a-sphere class="head" color="#ff4f9c" scale="0.9 1 0.8"></a-sphere>
           <a-entity class="face" position="0 0.1 0">
             <a-sphere class="eye" color="#efefef" position="0.32 0.2 -0.7" scale="0.24 0.24 0.24">
               <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
@@ -256,12 +249,6 @@
         border-color="black" focus-color="black" background-color="#2D9BF0">
       </a-gui-button>
     </a-gui-flex-container>
-
-    <a-gui-flex-container data-clickable id="blockButtonsContainer" flex-direction="column" visible="false" justify-content="center" width="3"
-    height="3" position="4 72 -0.5" rotation="-90 0 0">
-    <a-gui-button width="3" height="3" >
-      </a-gui-button>
-   </a-gui-flex-container>
 
     <a-gui-flex-container id="remainingTimeLabelContainer" flex-direction="column" justify-content="center"
       align-items="center" width="2.5" height="0.75" position="-6 70 -3.3" rotation="-90 0 0">
