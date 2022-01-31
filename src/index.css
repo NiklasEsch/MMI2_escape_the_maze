@@ -7,8 +7,12 @@ a {
     text-decoration: none;
 }
 
+p {
+    margin: 2% 10% 0% 10%;
+}
+
 .selection-container {
-    margin-top: 5%;
+    margin-top: 3%;
 }
 
 .button-container {
